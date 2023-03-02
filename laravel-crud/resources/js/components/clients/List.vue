@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     name:"clients",
     data(){
@@ -60,7 +61,7 @@ export default {
     },
     methods:{
         async getClients(){
-            await this.axios.get('/api/client').then(response=>{
+            await axios.get('http://localhost:8000/api/client').then(response=>{
                 this.clients = response.data
             }).catch(error=>{
                 console.log(error)
@@ -69,7 +70,7 @@ export default {
         },
         deleteClient(id){
             if(confirm("Are you sure to delete this client?")){
-                this.axios.delete('/api/client/'+id).then(response=>{
+                axios.delete('http://localhost:8000/api/client/'+id).then(response=>{
                     this.getClients()
                 }).catch(error=>{
                     console.log(error)

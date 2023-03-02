@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default{
     name:"update-client",
     data(){
@@ -73,7 +74,7 @@ export default{
             })
         },
         async update(){
-            await this.axios.post('/api/client/'+this.$route.params.id, this.client).then(response=>{
+            await axios.post('/api/client/'+this.$route.params.id, this.client).then(response=>{
                 this.$router.push({name:"clientList"})
             }).catch(error=>{
                 console.log(error)

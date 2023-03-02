@@ -21,7 +21,7 @@ export const routes = [
     },
     {
         name: 'clientAdd',
-        path: '/client/:id/add',
+        path: '/client/add',
         component: ClientCreate
     },
 ]

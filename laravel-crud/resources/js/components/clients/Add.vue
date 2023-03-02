@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default{
     name:"add-client",
     data(){
@@ -58,7 +59,7 @@ export default{
     },
     methods:{
         async create(){
-            await this.axios.post('/api/client', this.client).then(response=>{
+            await axios.post('/api/client', this.client).then(response=>{
                 this.$router.push({name:"clientList"})
             }).catch(error=>{
                 console.log(error)
