@@ -1,46 +1,16 @@
 <template>
-    <div class="row">
-        <div class="col-12 mb-2 text-end">
+    <div class="container">
+        <div class="d-flex justify-content-end">
             <router-link :to='{name:"clientAdd"}' class="btn btn-primary">Create</router-link>
         </div>
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Client</h4>
-                </div>
+        <div v-if="clients.length > 0" class="container d-flex mt-5 flex-wrap gap-4 justify-content-center">
+            <div v-for="(client, key) in clients" :key="key" class="card" style="width: 22rem;">
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <div class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Surname</th>
-                                    <th>Phone</th>
-                                    <th>Description</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody v-if="clients.length > 0">
-                                <tr v-for="(client, key) in clients" :key="key">
-                                    <td>{{client.id}}</td>
-                                    <td>{{client.name}}</td>
-                                    <td>{{client.surname}}</td>
-                                    <td>{{client.phone}}</td>
-                                    <td>{{client.description}}</td>
-                                    <td>
-                                        <router-link :to='{name:"clientEdit", params:{id:client.id}}' class="btn btn-success">Edit</router-link>
-                                        <button type="button" @click="deleteClient(client.id)" class="btn btn-danger">Delete</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tbody v-else>
-                                <tr>
-                                    <td colspan="4" align="center">No clients found.</td>
-                                </tr>
-                            </tbody>
-                        </div>
-                    </div>
+                    <h3 class="card-title">{{client.name + ' ' + client.surname}}</h3>
+                    <h6 class="card-subtitle mb-2 text-muted">phone: {{client.phone}}</h6>
+                    <p class="card-text">{{client.description}}</p>
+                    <router-link :to='{name:"clientEdit", params:{id:client.id}}' class="btn btn-success">Edit</router-link>
+                    <button type="button" @click="deleteClient(client.id)" class="btn btn-danger m-1">Delete</button>
                 </div>
             </div>
         </div>

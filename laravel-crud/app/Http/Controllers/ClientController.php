@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class ClientController extends Controller
 {
@@ -24,23 +26,34 @@ class ClientController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $client = Client::create($request->post());
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'surname' => 'required',
+            'phone' => 'required',
+            'description' => 'required',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['error' => 'The given data was invalid.'], 402);
+        }
+
+        $client = Client::create($validator->validate());
+
         return response()->json([
             'message' => 'Client created successfully!',
             'client' => $client
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Client $client)
+    public function show($id)
     {
+        $client = Client::find($id);
+
+        if (!$client) {
+            return response()->json(['error' => 'Client not found'], 404);
+        }
         return response()->json($client);
     }
 
@@ -53,10 +66,17 @@ class ClientController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Client $client)
+ * Update the specified resource in storage.
+ */
+    public function update(Request $request, $id)
     {
+        $client = Client::find($id);
+        if (!$client) {
+            return response()->json([
+                'error' => 'Client not found'
+            ], 404);
+        }
+
         $client->fill($request->post())->save();
         return response()->json([
             'message' => 'Client updated successfully!',
@@ -64,11 +84,18 @@ class ClientController extends Controller
         ]);
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client)
+    public function destroy($id)
     {
+        $client = Client::find($id);
+        if (!$client) {
+            return response()->json([
+                'error' => 'Client not found'
+            ], 404);
+        }
         $client->delete();
         return response()->json([
             'message' => 'Client deleted successfully!'
